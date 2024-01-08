@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for digitalia_muni_automatic_titles module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+function digitalia_muni_automatic_titles_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $forms = array('node_book_form', 'node_article_form', 'node_chapter_form', 'node_book_series_form',
+           'node_serial_edit_form', 'node_serial_form',
+           'node_book_edit_form', 'node_article_edit_form', 'node_chapter_edit_form', 'node_book_series_edit_form');
+  if (in_array($form_id, $forms)) {
+    $form['title']['#access'] = FALSE;
+  }
+ 
+}
+
+function digitalia_muni_automatic_titles_node_presave($node) {
+  $types = array('article','book_series', 'book', 'chapter', 'serial');
+  if (in_array($node->getType(),$types)) {
+    $title = $node->get('field_title_main')->getValue()[0]['first'];
+    if (empty($title)) {
+      $node->setTitle("UNTITLED");
+    } else {
+      $node->setTitle($title);
+    }
+  }
+}
+
