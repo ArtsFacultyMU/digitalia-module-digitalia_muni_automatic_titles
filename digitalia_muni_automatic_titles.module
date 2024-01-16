@@ -24,7 +24,7 @@ function digitalia_muni_automatic_titles_node_presave($node) {
   if (in_array($node->getType(),$types)) {
     $title = $node->get('field_title_main')->getValue()[0]['first'];
     if (empty($title)) {
-      $node->setTitle("UNTITLED");
+//      $node->setTitle("UNTITLED");
     } else {
       $node->setTitle($title);
     }
